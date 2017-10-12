@@ -1,8 +1,12 @@
 var assert = require('assert');
-var Anagram = require('../index');
+var WordChain = require('../index');
 
 describe('WordChain', function() {
-  describe('#levenshtein()', function() {
+  describe('#findChain()', function() {
+    it('finds candidates', function() {
+      let results = new WordChain('cat', 'dog').findChain();
+      assert.equal(results, ['cat', 'cot', 'cog', 'dog']);
+    });
   });
 });
 
