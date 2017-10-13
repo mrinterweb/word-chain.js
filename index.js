@@ -41,31 +41,7 @@ class WordChain {
     words.forEach((word, i) => this._addWord(word, i));
   }
 
-  // todo - take source and target args here so reinitialization is unnecessary
-  findChain() {
-    function mapCandidates(word, otherWord) {
-      let len = word.length;
-      let candidates = [...word].map((_v, i) => this.index[this._tokenize(word, i)]);
-      let accepted = [];
-      let otherWordReg = new RegExp(`[${otherWord}]`);
-      candidates.map((array) => {
-        let words = array.map(i => this.wordList[i])
-                         // filter words that have a letter from the other word
-                         .filter((w) => w.match(otherWordReg));
-        accepted = accepted.concat(words);
-      });
-      // remove dups and sort
-      return Array.from(new Set(accepted)).sort();
-    };
-
-
-    let sourceCandidates = mapCandidates.bind(this)(this.source, this.target);
-    let targetCandidates = mapCandidates.bind(this)(this.target, this.source);
-    debugger;
-    console.log("need to find the chain now");
-  }
-
-  findChain2(word=null, wordChain=[], matchedPositions=[]) {
+  findChain(word=null, wordChain=[], matchedPositions=[]) {
     word = word || this.source;
 
     wordChain = wordChain.concat(word);
