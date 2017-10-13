@@ -41,25 +41,35 @@ class WordChain {
     words.forEach((word, i) => this._addWord(word, i));
   }
 
+  // Finds the word chain
+  // This uses a breadth first traversal strategy that calls this function
+  // recusively as it traverses to deeper levels
   findChain(word=null, wordChain=[], matchedPositions=[]) {
     word = word || this.source;
-
     wordChain = wordChain.concat(word);
-    console.log('current chain', wordChain, 'with matched positions', matchedPositions);
+
+    // If the word is the target, the chain is complete
     if (word === this.target) return wordChain;
+
+    // I left this logger in here because I think it is interesting to see how it gets to the result
+    console.log('current chain', wordChain, 'with matched positions', matchedPositions);
 
     let tokens = [...word].map((v, i) => this._tokenize(word, i));
 
     for (let tokenIndex = 0; tokenIndex < tokens.length; tokenIndex++) {
       if (matchedPositions.indexOf(tokenIndex) === -1) {
         let token = tokens[tokenIndex];
+
         for (let wordIndex of this.index[token]) {
           let word2 = this.wordList[wordIndex];
           // Avoid non-terminating loop by checking if already in chain
           if (wordChain.indexOf(word2) === -1) {
             // recursive call
-            let newChain = this.findChain2(word2, wordChain, matchedPositions.concat(tokenIndex));
-            if (newChain && newChain[newChain.length - 1] === this.target) return newChain;
+            let newChain = this.findChain(word2, wordChain, matchedPositions.concat(tokenIndex));
+
+            if (newChain && newChain[newChain.length - 1] === this.target) {
+              return newChain;
+            }
           }
         }
       }
